@@ -261,6 +261,7 @@ if(isset($id) ){
             setTimeout(function () { $('#wlcm-alert').hide(); }, duration);
         };
 
+        console.log('I am here');
 
     </script>
 </body>
