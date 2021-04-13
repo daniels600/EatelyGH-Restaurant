@@ -83,7 +83,7 @@
 							<h1 class="m-b-20"><strong>Welcome To <br> Eately GH Restaurant</strong></h1>
 							<p class="m-b-40">Restaurants get to showcase their  <br> 
 							delicious meals easily to their customers.</p>
-							<p><a class="btn btn-lg btn-circle btn-outline-new-white" href="#">Get started</a></p>
+							<p><a class="btn btn-lg btn-circle btn-outline-new-white" href="views/login.php"">Get started</a></p>
 						</div>
 					</div>
 				</div>
@@ -96,7 +96,7 @@
 						<h1 class="m-b-20"><strong>Welcome To <br> Eately GH Restaurant</strong></h1>
 							<p class="m-b-40">Restaurants get to showcase their  <br> 
 							delicious meals easily to their customers.</p>
-							<p><a class="btn btn-lg btn-circle btn-outline-new-white" href="#">Get started</a></p>
+							<p><a class="btn btn-lg btn-circle btn-outline-new-white" href="views/login.php">Get started</a></p>
 						</div>
 					</div>
 				</div>
@@ -109,7 +109,7 @@
 							<h1 class="m-b-20"><strong>Welcome To <br> Eately GH Restaurant</strong></h1>
 							<p class="m-b-40">Restaurants get to showcase their  <br> 
 							delicious meals easily to their customers.</p>
-							<p><a class="btn btn-lg btn-circle btn-outline-new-white" href="#">Get started</a></p>
+							<p><a class="btn btn-lg btn-circle btn-outline-new-white" href="views/login.php"">Get started</a></p>
 						</div>
 					</div>
 				</div>
