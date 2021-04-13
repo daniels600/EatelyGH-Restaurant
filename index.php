@@ -20,7 +20,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="css/bootstrap.min.css">    
 	<!-- Site CSS -->
-    <link rel="stylesheet" href="./assets/css/styles.css">    
+    <link rel="stylesheet" href="./assets/css/style.css">    
     <!-- Responsive CSS -->
     <link rel="stylesheet" href="css/responsive.css">
     <!-- Custom CSS -->
