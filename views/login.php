@@ -35,7 +35,6 @@ if(isset($_GET['login'])){
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Login</title>
-    <link rel="icon" href="./assets/images/imageedit_28_3939584200.png" type="image/png">
     <link href="../assets/css/styles.css" rel="stylesheet" />
     <link href="../assets/css/parsley.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
@@ -118,7 +117,6 @@ if(isset($_GET['login'])){
     </div>
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script src="js/scripts.js"> </script>
 </body>
 
 </html>

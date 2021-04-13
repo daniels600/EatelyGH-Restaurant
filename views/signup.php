@@ -75,13 +75,13 @@ if (isset($_GET['error'])) {
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="FirstName">Restaurant Opening time</label>
-                                                    <input class="form-control" type="time" name="openingTime">
+                                                    <input class="form-control" type="time" name="openingTime" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="LastName">Restaurant Closing time</label>
-                                                    <input class="form-control" type="time" name="closingTime">
+                                                    <input class="form-control" type="time" name="closingTime" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -99,10 +99,10 @@ if (isset($_GET['error'])) {
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleFormControlTextarea1">Restaurant Description/ Main Servings</label>
-                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="res_description"></textarea>
+                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="res_description" data-parsley-trigger="keyup" required></textarea>
                                         </div>
                                         <div class="form-group">
-                                            <p id="demo" style="color: red;"></p>
+                                            <p id="demo" style="color: green;"></p>
                                             <button type="button" class="btn btn-primary btn-lg" onclick="getLocation()"><i class="fas fa-compass"></i><span style="margin-right: 10px;"></span>Get Location</button>
                                         </div>
                                         <div class="form-group">
@@ -142,7 +142,6 @@ if (isset($_GET['error'])) {
             </footer>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <!-- Getting the message from the insertion of case record and creating a flash message -->
     <?php if (isset($_GET['message'])) : ?>
@@ -183,7 +182,7 @@ if (isset($_GET['error'])) {
                 let address = "";
 
                 
-
+                const KEY = "AIzaSyALX08Dj7c9KkiydoaNCNrK95mXE-SCMwg";
 
                 let URL = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${KEY}`;
 
@@ -208,14 +207,12 @@ if (isset($_GET['error'])) {
 
             }
 
-
             $('#submit').click(function(e) {
-                    e.preventDefault();
-
-                    console.log('I am here ');
-
-                    console.log($('form').serialize());
-
+                $('#form').parsley().subscribe('parsley:form:validate', function (formInstance) {
+                    formInstance.submitEvent.preventDefault(); //stops normal form submit
+                    if (formInstance.isValid() == true) { // check if form valid or not
+                        //code for ajax event here
+                        
                     $.ajax({
                         type: "POST",
                         url: "./../actions/addRestaurant.php",
@@ -224,25 +221,70 @@ if (isset($_GET['error'])) {
                         encode: true,
                     }).done(function (data) {
                         console.log(data);
+                        if(data.status == true){
+                            Swal.fire({
+                            icon: 'success',
+                            title: 'Welcome to Eately GH',
+                            text: 'Your restaurant has been added successfully',
+                            footer: '<a href=login.php>Click here!</a>',
+                                type: "success"
+                            }).then(function() {
+                                window.location.href = 'login.php';
+                            });
+                        }else {
+                            Swal.fire({
+                            icon: 'warning',
+                            title: 'An error occurred',
+                            text: 'Your restaurant was not accepted',
+                            footer: '<a href=signup.php>Click here!</a>',
+                            type: "error"
+                            }).then(function() {
+                                window.location.href = 'signup.php';
+                            });
+                        }
+                        
                     });
-
-                    // $.ajax({
-                    //     type: "POST",
-                    //     url: "./../actions/addRestaurant.php",
-                    //     dataType: "json",
-                    //     data: $('#form').serialize(),
-                    //     success: function(data) {
-                    //         if (data.code == "200") {
-                    //             alert("Success: " + data.msg);
-                    //         } else {
-                    //             $(".display-error").html("<ul>" + data.msg + "</ul>");
-                    //             $(".display-error").css("display", "block");
-                    //         }
-                    //     }
-                    // });
-
-
+                }});
             });
+
+
+            // $('#submit').click(function(e) {
+            //         e.preventDefault();
+            //         if ( $(this).parsley().isValid() ) {
+
+            //         console.log('I am here ');
+
+            //         console.log($('form').serialize());
+
+                
+            //         $.ajax({
+            //             type: "POST",
+            //             url: "./../actions/addRestaurant.php",
+            //             data: $('#form').serialize(),
+            //             dataType: "json",
+            //             encode: true,
+            //         }).done(function (data) {
+            //             console.log(data);
+            //             Swal.fire({
+            //                 icon: 'success',
+            //                 title: 'Welcome to Eately GH',
+            //                 text: 'Your restaurant has been added successfully',
+            //                 footer: '<a href=login.php>Click here!</a>',
+            //                 type: "success"
+            //             }).then(function() {
+            //                 window.location.href = 'login.php';
+            //             });
+            //         });
+            //     }
+
+            // });
+
+
+        //Preview the inserted image 
+        var loadFile = function(event) {
+            var image = document.getElementById('output');
+            image.src = URL.createObjectURL(event.target.files[0]);
+        };
 
     </script>
 </body>

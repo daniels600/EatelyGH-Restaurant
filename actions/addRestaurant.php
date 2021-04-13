@@ -46,9 +46,15 @@ $db = new DB_connection();
         //header("Location: ../views/signup.php?message=success");
 
         $message['msg'] = "New restaurant added";
+        $message['status'] = true;
     } else {
         $message['msg'] = "New restaurant not added";
+        $message['status'] = false;
     }
 
+
+
 echo json_encode($message);
+
+
 ?>
