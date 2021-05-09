@@ -26,6 +26,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./assets/css/custom.css">
 
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -89,7 +90,7 @@
 				</div>
 			</li>
 			<li class="text-left">
-				<img src="images/slider-02.jpg" alt="">
+				<img src="images/slider-01.jpg" alt="">
 				<div class="container">
 					<div class="row">
 						<div class="col-md-12">
@@ -116,8 +117,8 @@
 			</li>
 		</ul>
 		<div class="slides-navigation">
-			<a href="#" class="next"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-			<a href="#" class="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
+			<a href="#" class="next"><i class="fas fa-angle-right" aria-hidden="true"></i></a>
+			<a href="#" class="prev"><i class="fas fa-angle-left" aria-hidden="true"></i></a>
 		</div>
 	</div>
 	<!-- End slides -->
@@ -597,19 +598,19 @@
 	</footer>
 	<!-- End Footer -->
 	
-	<a href="#" id="back-to-top" title="Back to top" style="display: none;"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></a>
+	<a href="#" id="back-to-top" title="Back to top" style="display: none;"><i class="far fa-paper-plane" aria-hidden="true"></i></a>
 
 	<!-- ALL JS FILES -->
-	<script src="js/jquery-3.2.1.min.js"></script>
-	<script src="js/popper.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
+	<script src="./assets/js/jquery-3.2.1.min.js"></script>
+	<script src="./assets/js/popper.min.js"></script>
+	<script src="./assets/js/bootstrap.min.js"></script>
     <!-- ALL PLUGINS -->
-	<script src="js/jquery.superslides.min.js"></script>
-	<script src="js/images-loded.min.js"></script>
-	<script src="js/isotope.min.js"></script>
-	<script src="js/baguetteBox.min.js"></script>
-	<script src="js/form-validator.min.js"></script>
-    <script src="js/contact-form-script.js"></script>
-    <script src="js/custom.js"></script>
+	<script src="./assets/js/jquery.superslides.min.js"></script>
+	<script src="./assets/js/images-loded.min.js"></script>
+	<script src="./assets/js/isotope.min.js"></script>
+	<script src="./assets/js/baguetteBox.min.js"></script>
+	<script src="./assets/js/form-validator.min.js"></script>
+    <script src="./assets/js/contact-form-script.js"></script>
+    <script src="./assets/js/custom.js"></script>
 </body>
 </html>

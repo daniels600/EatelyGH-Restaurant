@@ -6,6 +6,8 @@ include "../config/db_conn.php";
 
 $id = $_SESSION['restaurant_id'];
 
+$email = $_SESSION['admin_email'];
+
 if(isset($id) ){
     //creating an instance of db_connection 
     $db = new DB_connection();
@@ -14,12 +16,13 @@ if(isset($id) ){
     // $restaurant_id = isset($_SESSION['admin_id'])? $_SESSION['admin_id'] : "";
 
     $restaurant = "SELECT * FROM Restaurants WHERE restaurant_id='$id'";
+   
 
-    $menu = "SELECT * FROM menu WHERE restaurant_id='$id'";
+    $orders = "SELECT * FROM orders WHERE restaurant_id='1'";
 
     $result = $db->connect()->query($restaurant);
 
-    $menu_result = $db->connect()->query($menu);
+    $orders_result = $db->connect()->query($orders);
 
     if(mysqli_num_rows($result) > 0){
         while($row = mysqli_fetch_array($result)){ 
@@ -33,6 +36,24 @@ if(isset($id) ){
         }
 
     }
+
+   function meal($meal_id){
+
+        //creating an instance of db_connection 
+        $db = new DB_connection();
+
+        $meal_details = "SELECT * FROM menu WHERE menu_id='$meal_id'";
+
+        $meal_result = $db->connect()->query($meal_details);
+
+        if(mysqli_num_rows($meal_result) > 0){
+            while($row2 = mysqli_fetch_array($meal_result)){ 
+                return $row2['meal_name'];
+            }
+
+        }
+       
+   }
 
     
         
@@ -105,6 +126,8 @@ if(isset($id) ){
                         </a>
                         <div>
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                <a class="nav-link" href="restaurant.php">Menu List</a>
+                                <a class="nav-link" href="tables.php">Tables</a>
                                 <a class="nav-link" href="orders.php">Orders</a>
                                 <a class="nav-link" href="reservation.php">Reservations</a>
                             </nav>
@@ -112,14 +135,14 @@ if(isset($id) ){
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">
-                    <div class="small">Logged in as: </div>
+                    <div class="small">Logged in as: <?php echo $email; ?> </div>
                 </div>
             </nav>
         </div>
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid">
-                    <h1 class="mt-4">Dashboard</h1>
+                    <h1 class="mt-4">Orders</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item active" style="font-weight: 800; font-size: 30px"><?php echo $restaurant_name; ?></li>
                     </ol>
@@ -145,16 +168,18 @@ if(isset($id) ){
                                     <tbody>
                                     <?php
                                         
-                                        if(mysqli_num_rows($menu_result) > 0):
-                                            while($row = mysqli_fetch_array($menu_result)){ 
-                                                $image = base64_encode($row['meal_image']);
+                                        if(mysqli_num_rows($orders_result) > 0):
+                                            while($row = mysqli_fetch_array($orders_result)){ 
+                                                //$image = base64_encode($row['meal_image']);
+                                                $meal_name = meal($row['order_id']);
+                                                
                                         ?><?php
                                                 echo'
                                                 <tr>
-                                                    <td>'.'<img src=data:image/jpg;charset=utf8;base64,'."$image".' alt="" height=100 width=100></img>'.'</td>
-                                                    <td>'.$row['meal_name'].'</td>
-                                                    <td>'.'GH₵ '.$row['meal_price'].'.00'.'</td>
-                                                    <td>'.'<a class="btn btn-success" href="update_meal_form.php?edit=yes&id='.$row['menu_id'].'" role="button"><i class="fas fa-edit"></i></a><span>  </span><a class="btn btn-danger" href="../actions/delete_meal.php?id='.$row['menu_id'].'" role="button"><i class="fas fa-trash-alt"></i></a>'.'</td>
+                                                    <td>'.$row['order_id'].'</td>
+                                                    <td>'.$meal_name.'</td>
+                                                    <td>'.$row['created_at'].'</td>
+                                                    <td>'.'<a class="btn btn-success" href="update_meal_form.php?edit=yes&id='.$row['menu_id'].'" role="button">Accept</a><span>  </span><a class="btn btn-danger" href="../actions/delete_meal.php?id='.$row['menu_id'].'" role="button">Decline</a>'.'</td>
                                                 </tr>
                                               
                                                 ';
@@ -197,6 +222,7 @@ if(isset($id) ){
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+    <script src="../assets/demo/datatables-demo.js"></script>
 
     <script>
      //checking if the delete button is click and display message 

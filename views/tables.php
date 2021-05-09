@@ -17,11 +17,11 @@ if(isset($id) ){
 
     $restaurant = "SELECT * FROM Restaurants WHERE restaurant_id='$id'";
 
-    $menu = "SELECT * FROM menu WHERE restaurant_id='$id'";
+    $tables = "SELECT * FROM tables WHERE restaurant_id='$id'";
 
     $result = $db->connect()->query($restaurant);
 
-    $menu_result = $db->connect()->query($menu);
+    $table_result = $db->connect()->query($tables);
 
     if(mysqli_num_rows($result) > 0){
         while($row = mysqli_fetch_array($result)){ 
@@ -124,30 +124,30 @@ if(isset($id) ){
             <main>
             
                 <div class="container-fluid">
-                    <div class="alert alert-success alert-dismissible fade show" id="wlcm-alert">
+                    <!-- <div class="alert alert-success alert-dismissible fade show" id="wlcm-alert">
                         <button type="button" class="close" data-dismiss="alert">&times;</button>
                         <strong>Welcome! <?php echo $restaurant_name; ?> </strong> Kindly add a meal to your Menu
-                    </div>
-                    <h1 class="mt-4">Dashboard</h1>
+                    </div> -->
+                    <h1 class="mt-4">Tables/Seats</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item active" style="font-weight: 800; font-size: 30px"><?php echo $restaurant_name; ?></li>
                     </ol>
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table mr-1"></i>
-                            Menu
-                            <button class="btn btn-primary" style="float:right; margin-right:auto" onclick="document.location=`add_meal_form.php?restaurant_id=${<?php echo $restaurant_id; ?>}`"><i class="fas fa-plus"></i> Add</button>
+                            Tables / Seats
+                            <button class="btn btn-primary" style="float:right; margin-right:auto" onclick="document.location=`add_table_form.php?restaurant_id=${<?php echo $restaurant_id; ?>}`"><i class="fas fa-plus"></i> Add</button>
                         </div>
                         
                         <div class="card-body">
                             <div class="table-responsive">
+                            <form action="./../actions/update_Table.php" method="post">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" data-toggle ="table" data-show-toggle="true" data-toolbar="#toolbar" data-show-fullscreen="true" data-pagination-pre-text="Previous">
                                     
                                     <thead>
                                         <tr>
-                                            <th>Meal Image</th>
-                                            <th>Meal Name</th>
-                                            <th>Meal Price</th>
+                                            <th>Table #</th>
+                                            <th>Capacity</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -155,23 +155,29 @@ if(isset($id) ){
                                     <tbody>
                                     <?php
                                         
-                                        if(mysqli_num_rows($menu_result) > 0):
-                                            while($row = mysqli_fetch_array($menu_result)){ 
-                                                $image = base64_encode($row['meal_image']);
+                                        if(mysqli_num_rows($table_result) > 0):
+                                            while($row = mysqli_fetch_array($table_result)){ 
+                                                //$image = base64_encode($row['meal_image']);
                                         ?><?php
                                                 echo'
+                                                
                                                 <tr>
-                                                    <td>'.'<img src=data:image/jpg;charset=utf8;base64,'."$image".' alt="" height=100 width=100></img>'.'</td>
-                                                    <td>'.$row['meal_name'].'</td>
-                                                    <td>'.'GH₵ '.$row['meal_price'].'.00'.'</td>
-                                                    <td>'.'<a class="btn btn-success" href="update_meal_form.php?edit=yes&id='.$row['menu_id'].'" role="button"><i class="fas fa-edit"></i></a><span>  </span><a class="btn btn-danger" href="../actions/delete_meal.php?id='.$row['menu_id'].'" role="button"><i class="fas fa-trash-alt"></i></a>'.'</td>
+                                                        <td>'.$row['table_name'].'</td>
+                                                        <td>'.$row['capacity'].'</td>
+                                                        <td>'.'<label class="switch">
+                                                        <input type="checkbox" class="table_avail" data-id='.$row["table_id"]. ' value='.$row["table_status"].' >
+                                                        <span class="slider round"></span>
+                                                        </label>'.'</td>
+                                                    
                                                 </tr>
+                                               
                                               
                                                 ';
                                         
                                                 ?><?php } endif;?>
                                     </tbody>
                                 </table>
+                            </form>
                             </div>
                         </div>
                     </div>
@@ -259,12 +265,121 @@ if(isset($id) ){
             });
         }
 
-        window.onload = function() {
-            var duration = 3000; //2 seconds
-            setTimeout(function () { $('#wlcm-alert').hide(); }, duration);
-        };
 
-        console.log('I am here');
+        $(document).ready(function(){
+            $('input[type="checkbox"]').click(function(){
+                var table_id = $(this).data('id'); 
+                
+                if($(this).prop("checked") == true){
+
+                    console.log("Checkbox is checked.");
+                    
+                    var table_id = $(this).data('id'); 
+
+                    console.log('Table id', $(this).data('id'));
+
+                   $.ajax({
+                        type: "POST",
+                        url: './../actions/update_Table.php',
+                        data: {
+                            table_id: table_id,
+                            status: 'Occupied'},
+                    
+                        
+                        }).done(function(data) {
+                            data = JSON.parse(data);
+                            console.log(data['status']);
+
+                            $('input[type="checkbox"]').val('Occupied');
+
+                            localStorage.setItem('table_id', data);
+
+                            console.log($('input[type="checkbox"]').val());
+
+                            
+                        });
+
+                }else if($(this).prop("checked") == false){
+
+                    console.log("Checkbox is unchecked.");
+                    
+                    var table_id = $(this).data('id'); 
+
+                    console.log('Table id', $(this).data('id'));
+
+                   $.ajax({
+                        type: "POST",
+                        url: './../actions/update_Table.php',
+                        data: {
+                            table_id: table_id,
+                            status: 'Available'},
+                    
+                        
+                        }).done(function(data) {
+                            data = JSON.parse(data);
+                            console.log(data['status']);
+
+                            $('input[type="checkbox"]').val('Available');
+
+                            localStorage.setItem('table_id', data)
+
+                            console.log($('input[type="checkbox"]').val());
+
+                            
+                        });
+
+                }
+
+                
+
+                });
+                
+            });
+
+      
+
+        // $(document).ready(function(){ 
+
+        //     var MyRows = $('table#dataTable').find('tbody').find('tr');
+                
+        //         for (var i = 0; i < MyRows.length; i++) {
+        //             var MyIndexValue = $(MyRows[i]).find('td:eq(2)').html();
+
+        //             var Value = $(MyRows[i]).find('td:eq(2)').html();
+
+        //             var n = $('MyIndexValue').find('input[type="checkbox"]').val();
+        //             console.log(n);
+        //         }
+
+        //     $('tbody tr').each(function(index,value) {
+        //         //var checkVal = $(this).find(".table_avail").val(); 
+        //         var checkVal = $('.table_avail').val();
+        //         var id = $(this).data('id'); 
+
+        //         // var MyRows = $('table#htmlTable').find('tbody').find('tr');
+
+        //         // for (var i = 0; i < MyRows.length; i++) {
+        //         //     var MyIndexValue = $(MyRows[i]).find('td:eq(0)').html();
+        //         //     console.log(MyIndexValue);
+        //         // }
+
+        //         //console.log("row"+index+" : "+rowValues);
+
+
+        //         //console.log(checkVal, id);
+        //         if(checkVal == 'Occupied'){
+        //             var val = $('input[type="checkbox"]').data('id'); 
+        //             //console.log(val);
+        //             //$('#'.val).prop('checked', true);
+        //         }else {
+        //             //var val = $(this).data('id'); 
+        //             var val = $('input[type="checkbox"]').data('id'); 
+        //             //console.log(val);
+        //             //$('.table_avail').prop('checked', false);
+        //         }
+        //     });
+
+        // });
 
     </script>
 </body>

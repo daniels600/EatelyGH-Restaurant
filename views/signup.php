@@ -101,11 +101,35 @@ if (isset($_GET['error'])) {
                                             <label for="exampleFormControlTextarea1">Restaurant Description/ Main Servings</label>
                                             <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="res_description" data-parsley-trigger="keyup" required></textarea>
                                         </div>
-                                        <div class="form-group">
-                                            <p id="demo" style="color: green;"></p>
-                                            <button type="button" class="btn btn-primary btn-lg" onclick="getLocation()"><i class="fas fa-compass"></i><span style="margin-right: 10px;"></span>Get Location</button>
+                                        <div class="info">
+                                                <p style="color: green;">Kindly provide this information for customers to easily get your location <span style="color: red;">*optional</span></p>
+                                                <p style="text-decoration: none;">Using <a href="https://www.google.com/maps/" target="_blank"> Google maps</a> OR Using <a href="https://ghanapostgps.com/map/" target="_blank">GhanaPostGPS</a></p>
                                         </div>
                                         <div class="form-group">
+                                            <label>Restaurant's Address</label>
+                                            <input class="form-control py-4" type="text" aria-describedby="emailHelp" placeholder="Region, Street name" required data-parsley-trigger="keyup" name='res_location' />
+
+                                        </div>
+
+                                        <div class="form-row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="FirstName">Restaurant's Latitude</label>
+                                                    <input class="form-control" type="text" name="res_lat" data-parsley-pattern="/([0-9.-]+).+?([0-9.-]+)/" data-parsley-trigger="keyup" placeholder="Latitude">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="LastName">Restaurant's Longitude</label>
+                                                    <input class="form-control" type="text" name="res_long" data-parsley-pattern='/([0-9.-]+).+?([0-9.-]+)/' data-parsley-trigger="keyup" placeholder="Longitude">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="form-group">
+                                            <p id="demo" style="color: green;"></p>
+                                            <button type="button" class="btn btn-primary btn-lg" onclick="getLocation()"><i class="fas fa-compass"></i><span style="margin-right: 10px;"></span>Get Location</button>
+                                        </div> -->
+                                        <!-- <div class="form-group">
                                             <input type="hidden" name="res_location" id="restaurant_location">
                                         </div>
                                         <div class="form-group">
@@ -113,7 +137,7 @@ if (isset($_GET['error'])) {
                                         </div>
                                         <div class="form-group">
                                             <input type="hidden" name="res_long" id="restaurant_longitude">
-                                        </div>
+                                        </div> -->
 
                                         <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
                                             <a class="small" href="login.php">Return to login</a>
@@ -145,7 +169,7 @@ if (isset($_GET['error'])) {
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <!-- Getting the message from the insertion of case record and creating a flash message -->
     <?php if (isset($_GET['message'])) : ?>
-        <div class='flash-data' data-flashdata="<? $_GET['message'];?>"></div>
+        <div class='flash-data' data-flashdata="<? $_GET['message']; ?>"></div>
     <?php endif; ?>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script>
@@ -165,119 +189,90 @@ if (isset($_GET['error'])) {
         }
 
 
-            var x = document.getElementById("demo");
+        // var x = document.getElementById("demo");
 
-            function getLocation() {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(showPosition);
-                } else {
-                    x.innerHTML = "Geolocation is not supported by this browser.";
-                }
-            }
+        // function getLocation() {
+        //     if (navigator.geolocation) {
+        //         navigator.geolocation.getCurrentPosition(showPosition);
+        //     } else {
+        //         x.innerHTML = "Geolocation is not supported by this browser.";
+        //     }
+        // }
 
-            function showPosition(position) {
-                x.innerHTML = "Your Location is identified successfully";
-                let lat = position.coords.latitude;
-                let lng = position.coords.longitude;
-                let address = "";
-
-                
-                const KEY = "AIzaSyALX08Dj7c9KkiydoaNCNrK95mXE-SCMwg";
-
-                let URL = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${KEY}`;
+        // function showPosition(position) {
+        //     x.innerHTML = "Your Location is identified successfully";
+        //     let lat = position.coords.latitude;
+        //     let lng = position.coords.longitude;
+        //     let address = "";
 
 
-                fetch(URL)
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data);
-                        let parts = data.results[0].address_components;
-                        address = data.results[0].formatted_address;
-                        console.log(data.results[0].formatted_address);
+        //     const KEY = "AIzaSyALX08Dj7c9KkiydoaNCNrK95mXE-SCMwg";
 
-                        document.getElementById("restaurant_location").value = address;
-                        document.getElementById("restaurant_latitude").value = lat;
-                        document.getElementById("restaurant_longitude").value = lng;
-                    })
-                    .catch(err => {
-                        console.warn(err.message);
-                    })
+        //     let URL = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${KEY}`;
 
-                
 
-            }
+        //     fetch(URL)
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             console.log(data);
+        //             let parts = data.results[0].address_components;
+        //             address = data.results[0].formatted_address;
+        //             console.log(data.results[0].formatted_address);
 
-            $('#submit').click(function(e) {
-                $('#form').parsley().subscribe('parsley:form:validate', function (formInstance) {
-                    formInstance.submitEvent.preventDefault(); //stops normal form submit
-                    if (formInstance.isValid() == true) { // check if form valid or not
-                        //code for ajax event here
-                        
+        //             document.getElementById("restaurant_location").value = address;
+        //             document.getElementById("restaurant_latitude").value = lat;
+        //             document.getElementById("restaurant_longitude").value = lng;
+        //         })
+        //         .catch(err => {
+        //             console.warn(err.message);
+        //         })
+
+
+
+        // }
+
+        $('#submit').click(function(e) {
+            $('#form').parsley().subscribe('parsley:form:validate', function(formInstance) {
+                formInstance.submitEvent.preventDefault(); //stops normal form submit
+                if (formInstance.isValid() == true) { // check if form valid or not
+                    //code for ajax event here
+
                     $.ajax({
                         type: "POST",
                         url: "./../actions/addRestaurant.php",
                         data: $('#form').serialize(),
                         dataType: "json",
                         encode: true,
-                    }).done(function (data) {
+                    }).done(function(data) {
                         console.log(data);
-                        if(data.status == true){
+                        if (data.status == true) {
                             Swal.fire({
-                            icon: 'success',
-                            title: 'Welcome to Eately GH',
-                            text: 'Your restaurant has been added successfully',
-                            footer: '<a href=login.php>Click here!</a>',
+                                icon: 'success',
+                                title: 'Welcome to Eately GH',
+                                text: 'Your restaurant has been added successfully',
+                                footer: '<a href=login.php>Click here!</a>',
                                 type: "success"
                             }).then(function() {
                                 window.location.href = 'login.php';
                             });
-                        }else {
+                        } else {
                             Swal.fire({
-                            icon: 'warning',
-                            title: 'An error occurred',
-                            text: 'Your restaurant was not accepted',
-                            footer: '<a href=signup.php>Click here!</a>',
-                            type: "error"
+                                icon: 'warning',
+                                title: 'An error occurred',
+                                text: 'Your restaurant was not accepted',
+                                footer: '<a href=signup.php>Click here!</a>',
+                                type: "error"
                             }).then(function() {
                                 window.location.href = 'signup.php';
                             });
                         }
-                        
+
                     });
-                }});
+                }
             });
+        });
 
 
-            // $('#submit').click(function(e) {
-            //         e.preventDefault();
-            //         if ( $(this).parsley().isValid() ) {
-
-            //         console.log('I am here ');
-
-            //         console.log($('form').serialize());
-
-                
-            //         $.ajax({
-            //             type: "POST",
-            //             url: "./../actions/addRestaurant.php",
-            //             data: $('#form').serialize(),
-            //             dataType: "json",
-            //             encode: true,
-            //         }).done(function (data) {
-            //             console.log(data);
-            //             Swal.fire({
-            //                 icon: 'success',
-            //                 title: 'Welcome to Eately GH',
-            //                 text: 'Your restaurant has been added successfully',
-            //                 footer: '<a href=login.php>Click here!</a>',
-            //                 type: "success"
-            //             }).then(function() {
-            //                 window.location.href = 'login.php';
-            //             });
-            //         });
-            //     }
-
-            // });
 
 
         //Preview the inserted image 
@@ -285,7 +280,6 @@ if (isset($_GET['error'])) {
             var image = document.getElementById('output');
             image.src = URL.createObjectURL(event.target.files[0]);
         };
-
     </script>
 </body>
 

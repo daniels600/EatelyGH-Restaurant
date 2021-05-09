@@ -6,6 +6,8 @@ include "../config/db_conn.php";
 
 $id = $_SESSION['restaurant_id'];
 
+$email = $_SESSION['admin_email'];
+
 if(isset($id) ){
     //creating an instance of db_connection 
     $db = new DB_connection();
@@ -98,7 +100,7 @@ if(isset($id) ){
                         <div class="sb-sidenav-menu-heading">Core</div>
                         <a class="nav-link" href="restaurant.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Dashboard
+                            Reservations
                         </a>
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                             <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
@@ -107,6 +109,8 @@ if(isset($id) ){
                         </a>
                         <div>
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                <a class="nav-link" href="restaurant.php">Menu List</a>
+                                <a class="nav-link" href="tables.php">Tables</a>
                                 <a class="nav-link" href="orders.php">Orders</a>
                                 <a class="nav-link" href="reservation.php">Reservations</a>
                             </nav>
@@ -114,14 +118,14 @@ if(isset($id) ){
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">
-                    <div class="small">Logged in as: </div>
+                    <div class="small">Logged in as: <?php echo $email; ?> </div>
                 </div>
             </nav>
         </div>
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid">
-                    <h1 class="mt-4">Dashboard</h1>
+                    <h1 class="mt-4">Reservations</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item active" style="font-weight: 800; font-size: 30px"><?php echo $restaurant_name; ?></li>
                     </ol>
@@ -199,7 +203,9 @@ if(isset($id) ){
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+    <script src="../assets/demo/datatables-demo.js"></script>
     <script>
+    
      //checking if the delete button is click and display message 
      $(".btn-danger").on('click', function(e){
             e.preventDefault();
