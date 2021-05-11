@@ -88,6 +88,29 @@ if(isset($_GET['message']) && $_GET['message'] == 'error'){
     <?php endif; ?>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script>
+
+        //  //checking if the delete button is click and display message 
+        //  $(".btn-primary").on('click', function(e) {
+        //     // e.preventDefault();
+        //     //const href = $(this).attr('href')
+
+        //     $("form").submit(function (event) {
+        //         var formData = this.serialize();
+
+        //         console.log(formData);
+
+        //         $.ajax({
+        //         type: "POST",
+        //         url: "../actions/add_new_table.php",
+        //         data: this.serialize(),
+        //         dataType: "json",
+        //         encode: true,
+        //         }).done(function (data) {
+        //             console.log(data);
+        //         });
+        //         event.preventDefault();
+        //     });
+        // })
     // Using sweetalert to show an alert
     const flashdata = $('.flash-data').data('flashdata');
 
@@ -99,6 +122,21 @@ if(isset($_GET['message']) && $_GET['message'] == 'error'){
             }).then(function () {
                 window.location.href = 'tables.php';
             });
+        }
+
+        //A function to store the tables id in an array
+        function SaveDataToLocalStorage(data)
+        {
+            var a = [];
+            // Parse the serialized data back into an aray of objects
+            a = JSON.parse(localStorage.getItem('session')) || [];
+
+            // Push the new data (whether it be an object or anything else) onto the array
+            a.push(data);
+            // Alert the array value
+            alert(a);  // Should be something like [Object array]
+            // Re-serialize the array back into a string and store it in localStorage
+            localStorage.setItem('session', JSON.stringify(a));
         }
 
     </script>

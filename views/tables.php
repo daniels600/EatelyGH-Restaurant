@@ -8,7 +8,7 @@ $id = $_SESSION['restaurant_id'];
 
 $email = $_SESSION['admin_email'];
 
-if(isset($id) ){
+if (isset($id)) {
     //creating an instance of db_connection 
     $db = new DB_connection();
 
@@ -23,8 +23,8 @@ if(isset($id) ){
 
     $table_result = $db->connect()->query($tables);
 
-    if(mysqli_num_rows($result) > 0){
-        while($row = mysqli_fetch_array($result)){ 
+    if (mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_array($result)) {
             $restaurant_name = $row['restaurant_name'];
             $restaurant_loc = $row['restaurant_address'];
             $restaurant_email = $row['restaurant_email'];
@@ -32,13 +32,8 @@ if(isset($id) ){
             $restaurant_closeTime = $row['restaurant_closing_time'];
             $restaurant_des = $row['restaurant_description'];
             $restaurant_id = $row['restaurant_id'];
-
-
         }
-
     }
-
-    
 }
 
 ?>
@@ -116,13 +111,13 @@ if(isset($id) ){
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">
-                    <div class="small">Logged in as:  <?php echo $email; ?></div>
+                    <div class="small">Logged in as: <?php echo $email; ?></div>
                 </div>
             </nav>
         </div>
         <div id="layoutSidenav_content">
             <main>
-            
+
                 <div class="container-fluid">
                     <!-- <div class="alert alert-success alert-dismissible fade show" id="wlcm-alert">
                         <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -138,53 +133,57 @@ if(isset($id) ){
                             Tables / Seats
                             <button class="btn btn-primary" style="float:right; margin-right:auto" onclick="document.location=`add_table_form.php?restaurant_id=${<?php echo $restaurant_id; ?>}`"><i class="fas fa-plus"></i> Add</button>
                         </div>
-                        
+
                         <div class="card-body">
                             <div class="table-responsive">
-                            <form action="./../actions/update_Table.php" method="post">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" data-toggle ="table" data-show-toggle="true" data-toolbar="#toolbar" data-show-fullscreen="true" data-pagination-pre-text="Previous">
-                                    
-                                    <thead>
-                                        <tr>
-                                            <th>Table #</th>
-                                            <th>Capacity</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                            
-                                    <tbody>
-                                    <?php
-                                        
-                                        if(mysqli_num_rows($table_result) > 0):
-                                            while($row = mysqli_fetch_array($table_result)){ 
-                                                //$image = base64_encode($row['meal_image']);
-                                        ?><?php
-                                                echo'
+                                <form action="./../actions/update_Table.php" method="post">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" data-toggle="table" data-show-toggle="true" data-toolbar="#toolbar" data-show-fullscreen="true" data-pagination-pre-text="Previous">
+
+                                        <thead>
+                                            <tr>
+                                                <th>Table #</th>
+                                                <th>Capacity</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <?php
+
+                                            if (mysqli_num_rows($table_result) > 0) :
+                                                while ($row = mysqli_fetch_array($table_result)) {
+                                                    //$image = base64_encode($row['meal_image']);
+                                                    $status = $row["table_status"];
+
+                                                    $check  = ($status == "Occupied")? "checked" : "";
+                                            ?><?php
+                                                    echo '
                                                 
                                                 <tr>
-                                                        <td>'.$row['table_name'].'</td>
-                                                        <td>'.$row['capacity'].'</td>
-                                                        <td>'.'<label class="switch">
-                                                        <input type="checkbox" class="table_avail" data-id='.$row["table_id"]. ' value='.$row["table_status"].' >
+                                                        <td>' . $row['table_name'] . '</td>
+                                                        <td>' . $row['capacity'] . '</td>
+                                                        <td>' . '<label class="switch">
+                                                        <input type="checkbox" class="table_avail" data-id=' . $row["table_id"] . ' value='. $row["table_status"] .' '.$check.' '.'>
                                                         <span class="slider round"></span>
-                                                        </label>'.'</td>
+                                                        </label>' . '</td>
                                                     
                                                 </tr>
                                                
                                               
                                                 ';
-                                        
-                                                ?><?php } endif;?>
-                                    </tbody>
-                                </table>
-                            </form>
+
+                                            ?><?php }
+                                            endif; ?>
+                                        </tbody>
+                                    </table>
+                                </form>
                             </div>
                         </div>
                     </div>
 
                 </div>
             </main>
-            <form><input type="hidden" value= <?php echo $id; ?>></form>
+            <form><input type="hidden" value=<?php echo $id; ?>></form>
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid">
                     <div class="d-flex align-items-center justify-content-between small">
@@ -199,11 +198,11 @@ if(isset($id) ){
             </footer>
         </div>
     </div>
-    <?php if(isset($_GET['message'])) : ?>
-        <div class='flash-data' data-flashdata="<? $_GET['message'];?>"></div>
+    <?php if (isset($_GET['message'])) : ?>
+        <div class='flash-data' data-flashdata="<? $_GET['message']; ?>"></div>
     <?php endif; ?>
-    <?php if(isset($_GET['edit'])) : ?>
-        <div class='flash-edit' data-flashedit="<? $_GET['edit'];?>"></div>
+    <?php if (isset($_GET['edit'])) : ?>
+        <div class='flash-edit' data-flashedit="<? $_GET['edit']; ?>"></div>
     <?php endif; ?>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
@@ -214,13 +213,13 @@ if(isset($id) ){
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
     <script src="../assets/demo/datatables-demo.js"></script>
     <script>
-     //checking if the delete button is click and display message 
-     $(".btn-danger").on('click', function(e){
+        //checking if the delete button is click and display message 
+        $(".btn-danger").on('click', function(e) {
             e.preventDefault();
             const href = $(this).attr('href')
 
             Swal.fire({
-                icon:'warning',
+                icon: 'warning',
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
                 type: 'warning',
@@ -229,160 +228,186 @@ if(isset($id) ){
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes, delete it!',
                 cancelButtonText: 'No, cancel!'
-                }).then((result) => {
-                    if(result.value){
-                        document.location.href = href;
-                    }
-                    
-                })
+            }).then((result) => {
+                if (result.value) {
+                    document.location.href = href;
+                }
+
+            })
         })
         //showing message after a delete success
         const flashdata = $('.flash-data').data('flashdata');
 
         const flashedit = $('.flash-edit').data('flashedit');
 
-        
-        if(flashdata) {
+
+        if (flashdata) {
             Swal.fire({
-                icon:'success',
+                icon: 'success',
                 type: 'success',
                 title: 'Deleted successfully',
                 text: 'Meal record deleted!',
-                    
-            }).then(function () {
+
+            }).then(function() {
                 window.location.href = `restaurant.php?id=${<?php echo $id; ?>}`;
             });
         }
 
-        if(flashedit) {
+        if (flashedit) {
             Swal.fire({
                 icon: 'success',
                 title: 'Meal Updated successfully',
-                allowOutsideClick: true,                  
-                type: "success" 
-            }).then(function () {
+                allowOutsideClick: true,
+                type: "success"
+            }).then(function() {
                 window.location.href = `restaurant.php?id=${<?php echo $id; ?>}`;
             });
         }
 
 
-        $(document).ready(function(){
-            $('input[type="checkbox"]').click(function(){
-                var table_id = $(this).data('id'); 
-                
-                if($(this).prop("checked") == true){
+        $(document).ready(function() {
+            $('input[type="checkbox"]').click(function() {
+                var table_id = $(this).data('id');
+
+                if ($(this).prop("checked") == true) {
 
                     console.log("Checkbox is checked.");
-                    
-                    var table_id = $(this).data('id'); 
+
+                    var table_id = $(this).data('id');
 
                     console.log('Table id', $(this).data('id'));
 
-                   $.ajax({
+                    $.ajax({
                         type: "POST",
                         url: './../actions/update_Table.php',
                         data: {
                             table_id: table_id,
-                            status: 'Occupied'},
-                    
-                        
-                        }).done(function(data) {
-                            data = JSON.parse(data);
-                            console.log(data['status']);
+                            status: 'Occupied'
+                        },
 
-                            $('input[type="checkbox"]').val('Occupied');
 
-                            localStorage.setItem('table_id', data);
+                    }).done(function(data) {
+                        data = JSON.parse(data);
+                        console.log(data);
 
-                            console.log($('input[type="checkbox"]').val());
+                        $('input[type="checkbox"]').val('Occupied');
 
-                            
-                        });
+                        localStorage.setItem(data['table_id'], JSON.stringify(data));
 
-                }else if($(this).prop("checked") == false){
+                        console.log($('input[type="checkbox"]').val());
+
+
+                    });
+
+                } else if ($(this).prop("checked") == false) {
 
                     console.log("Checkbox is unchecked.");
-                    
-                    var table_id = $(this).data('id'); 
+
+                    var table_id = $(this).data('id');
 
                     console.log('Table id', $(this).data('id'));
 
-                   $.ajax({
+                    $.ajax({
                         type: "POST",
                         url: './../actions/update_Table.php',
                         data: {
                             table_id: table_id,
-                            status: 'Available'},
-                    
-                        
-                        }).done(function(data) {
-                            data = JSON.parse(data);
-                            console.log(data['status']);
+                            status: 'Available'
+                        },
 
-                            $('input[type="checkbox"]').val('Available');
 
-                            localStorage.setItem('table_id', data)
+                    }).done(function(data) {
+                        data = JSON.parse(data);
+                        console.log(data);
 
-                            console.log($('input[type="checkbox"]').val());
+                        $('input[type="checkbox"]').val('Available');
 
-                            
-                        });
+                        localStorage.setItem(data['table_id'], JSON.stringify(data))
+
+                        console.log($('input[type="checkbox"]').val());
+
+                    });
 
                 }
 
-                
-
-                });
-                
             });
 
-      
-
-        // $(document).ready(function(){ 
-
-        //     var MyRows = $('table#dataTable').find('tbody').find('tr');
-                
-        //         for (var i = 0; i < MyRows.length; i++) {
-        //             var MyIndexValue = $(MyRows[i]).find('td:eq(2)').html();
-
-        //             var Value = $(MyRows[i]).find('td:eq(2)').html();
-
-        //             var n = $('MyIndexValue').find('input[type="checkbox"]').val();
-        //             console.log(n);
-        //         }
-
-        //     $('tbody tr').each(function(index,value) {
-        //         //var checkVal = $(this).find(".table_avail").val(); 
-        //         var checkVal = $('.table_avail').val();
-        //         var id = $(this).data('id'); 
-
-        //         // var MyRows = $('table#htmlTable').find('tbody').find('tr');
-
-        //         // for (var i = 0; i < MyRows.length; i++) {
-        //         //     var MyIndexValue = $(MyRows[i]).find('td:eq(0)').html();
-        //         //     console.log(MyIndexValue);
-        //         // }
-
-        //         //console.log("row"+index+" : "+rowValues);
+        });
 
 
-        //         //console.log(checkVal, id);
-        //         if(checkVal == 'Occupied'){
-        //             var val = $('input[type="checkbox"]').data('id'); 
-        //             //console.log(val);
-        //             //$('#'.val).prop('checked', true);
-        //         }else {
-        //             //var val = $(this).data('id'); 
-        //             var val = $('input[type="checkbox"]').data('id'); 
-        //             //console.log(val);
-        //             //$('.table_avail').prop('checked', false);
-        //         }
-        //     });
 
-        // });
+        $(document).ready(function() {
 
+            // var MyRows = $('table#dataTable').find('tbody').find('tr');
+
+            // for (var i = 0; i < MyRows.length; i++) {
+            //     var MyIndexValue = $(MyRows[i]).find('td:eq(2)').html();
+
+            //     var Value = $(MyRows[i]).find('td:eq(2)').html();
+
+            //     var n = $('MyIndexValue').find('input[type="checkbox"]').val();
+            //     console.log(n);
+            // }
+
+            $('tbody tr').each(function(index, value) {
+                //var checkVal = $(this).find(".table_avail").val(); 
+                var checkVal = $('.table_avail').val();
+                var id = $(this).data('id');
+
+                // var MyRows = $('table#htmlTable').find('tbody').find('tr');
+
+                // for (var i = 0; i < MyRows.length; i++) {
+                //     var MyIndexValue = $(MyRows[i]).find('td:eq(0)').html();
+                //     console.log(MyIndexValue);
+                // }
+
+                //console.log("row"+index+" : "+rowValues);
+
+
+                //console.log(checkVal, id);
+                if (checkVal == 'Occupied') {
+                    var val = $('input[type="checkbox"]').data('id');
+                    //console.log(val);
+                    //$('#'.val).prop('checked', true);
+                } else {
+                    //var val = $(this).data('id'); 
+                    var val = $('input[type="checkbox"]').data('id');
+                    //console.log(val);
+                    //$('.table_avail').prop('checked', false);
+                }
+            });
+
+            function doShowAll() {
+
+                console.log('I am working ');
+
+                var key = "";
+                var i = 0;
+
+                var tblBody = $('table tbody');
+
+                let arr = JSON.parse(localStorage.getItem('addedIds'));
+
+                for (i = 0; i < arr.length; i++) {
+
+                    n = localStorage.getItem(arr[i]);
+                    n = JSON.parse(n);
+
+                    var row = `<tr data-rowId= ${arr[i]}><td><div class='product-item'><a class='product-thumb' href='#''> <img width='100%' src='thumb.php?src=${n.image}&q=50&w=750&h=972' alt='Product'></a> <div class="product-info"><h4 class="product-title"><a href="#"> ${n.name} </a></h4><span><em>Size:</em> 10.5</span><span><em>Color:</em> Dark Blue</span></div> </div></td> <form action="{{route('cart.update', '')}}" id='cart-form'> <td class="text-center"> <div class="count-input">
+    <input type="number" class="form-control" min="1" name="quantity" id="quantity" value=${n.quantity} data-id= ${arr[i]}></div> <td class="text-center text-lg text-medium"><span id=${arr[i]}><span>&#8373;</span> ${n.item_cost}</span></td> <input type="hidden" class="form-control" id="item_id"  name='item_id' 
+    value=${arr[i]}> </form> </td> <td class="text-center"> <a class="remove-from-cart" href="{{route('cart.destroy', '')}}" data-toggle="tooltip" name="remove_item" data-original-title="Remove item" data-id= ${arr[i]}><i class="fa fa-trash"></i></a></td></tr>`;
+
+                    tblBody.append(row);
+
+
+                }
+
+
+            }
+
+
+        });
     </script>
 </body>
 
 </html>
-

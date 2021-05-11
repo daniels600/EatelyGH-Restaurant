@@ -17,11 +17,11 @@ if(isset($id) ){
 
     $restaurant = "SELECT * FROM Restaurants WHERE restaurant_id='$id'";
 
-    $menu = "SELECT * FROM menu WHERE restaurant_id='$id'";
+    $reservation = "SELECT * FROM Reservation WHERE restaurant_id='$id'";
 
     $result = $db->connect()->query($restaurant);
 
-    $menu_result = $db->connect()->query($menu);
+    $reservation_result = $db->connect()->query($reservation);
 
     if(mysqli_num_rows($result) > 0){
         while($row = mysqli_fetch_array($result)){ 
@@ -35,6 +35,37 @@ if(isset($id) ){
 
 
         }
+
+    }
+
+    // printf($restaurant_name);
+    // die();
+
+
+    function showUser($id) {
+
+         //creating an instance of db_connection 
+        $db = new DB_connection();
+
+
+        $arr  = array();
+
+        $sql = "SELECT * FROM users WHERE user_id='$id'";
+
+        $result2 = $db->connect()->query($sql);
+
+        if(mysqli_num_rows($result2) > 0){
+            while($row = mysqli_fetch_array($result2)){ 
+                $user_name  = $row['user_name'];
+                $user_phone = $row['user_phone'];
+
+                array_push($arr,$user_name,$user_phone);
+            }
+
+        }
+
+        return $arr;
+
 
     }
 
@@ -141,9 +172,11 @@ if(isset($id) ){
                                     
                                     <thead>
                                         <tr>
-                                            <th>Reservation ID</th>
+                                            <th>Customer name</th>
+                                            <th>Customer phone</th>
                                             <th>Occupants</th>
                                             <th>Time Reserved</th>
+                                            <th>Reservation Status</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -151,16 +184,21 @@ if(isset($id) ){
                                     <tbody>
                                     <?php
                                         
-                                        if(mysqli_num_rows($menu_result) > 0):
-                                            while($row = mysqli_fetch_array($menu_result)){ 
-                                                $image = base64_encode($row['meal_image']);
+                                        if(mysqli_num_rows($reservation_result) > 0):
+                                            while($row = mysqli_fetch_array($reservation_result)){ 
+                                                //$image = base64_encode($row['meal_image']);
+
+                                                $a = showUser($row['user_id']);
+
                                         ?><?php
                                                 echo'
                                                 <tr>
-                                                    <td>'.'<img src=data:image/jpg;charset=utf8;base64,'."$image".' alt="" height=100 width=100></img>'.'</td>
-                                                    <td>'.$row['meal_name'].'</td>
-                                                    <td>'.'GH₵ '.$row['meal_price'].'.00'.'</td>
-                                                    <td>'.'<a class="btn btn-success" href="update_meal_form.php?edit=yes&id='.$row['menu_id'].'" role="button"><i class="fas fa-edit"></i></a><span>  </span><a class="btn btn-danger" href="../actions/delete_meal.php?id='.$row['menu_id'].'" role="button"><i class="fas fa-trash-alt"></i></a>'.'</td>
+                                                    <td>'.$a[0].'</td>
+                                                    <td>'.$a[1].'</td>
+                                                    <td>'.$row['party_size'].'</td>
+                                                    <td>'.$row['created_at'].'</td>
+                                                    <td>'.$row['reservation_status'].'</td>
+                                                    <td>'.'<a class="btn btn-success" href="../actions/update_reservation.php?id='.$row['reservation_id'].'" role="button"><i class="fas fa-check"></i></a><span>  </span><a class="btn btn-danger" href="../actions/end_reservation.php?id='.$row['reservation_id'].'" role="button"><i class="fas fa-trash-alt"></i></a>'.'</td>
                                                 </tr>
                                               
                                                 ';
@@ -214,12 +252,12 @@ if(isset($id) ){
             Swal.fire({
                 icon:'warning',
                 title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                text: "Would you like to end or close this reservation",
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!',
+                confirmButtonText: 'Yes, end it!',
                 cancelButtonText: 'No, cancel!'
                 }).then((result) => {
                     if(result.value){
@@ -238,22 +276,22 @@ if(isset($id) ){
             Swal.fire({
                 icon:'success',
                 type: 'success',
-                title: 'Deleted successfully',
-                text: 'Meal record deleted!',
+                title: 'Ended successfully',
+                text: 'This user\'s reservation has ended!',
                     
             }).then(function () {
-                window.location.href = `restaurant.php?id=${<?php echo $id; ?>}`;
+                window.location.href = `reservation.php?id=${<?php echo $id; ?>}`;
             });
         }
 
         if(flashedit) {
             Swal.fire({
                 icon: 'success',
-                title: 'Meal Updated successfully',
+                title: 'Reservation Accepted successfully',
                 allowOutsideClick: true,                  
                 type: "success" 
             }).then(function () {
-                window.location.href = `restaurant.php?id=${<?php echo $id; ?>}`;
+                window.location.href = `reservation.php?id=${<?php echo $id; ?>}`;
             });
         }
 
