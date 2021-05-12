@@ -86,7 +86,7 @@ if(isset($_GET['login'])){
                                             <input class="form-control py-4" id="inputPassword" type="password" placeholder="Enter password" name='admin_password' data-parsley-group="password_input" data-parsley-length="[4, 20]" data-parsley-required="true" data-parsley-trigger="keyup" />
                                         </div>
                                         <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
-                                            <a class="small" href="./views/password.php">Reset Password?</a>
+                                            <a class="small" href="password.php">Reset Password?</a>
                                             <input class="btn btn-primary" name="submit" type="submit" value="Login">
                                 
                                         </div>
